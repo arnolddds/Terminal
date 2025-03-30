@@ -1,4 +1,4 @@
-package com.example.terminal
+package com.example.terminal.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
