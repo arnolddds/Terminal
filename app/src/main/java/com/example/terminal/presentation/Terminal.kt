@@ -3,6 +3,7 @@ package com.example.terminal.presentation
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.TransformableState
+import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
@@ -33,7 +36,7 @@ fun Terminal(bars: List<Bar>) {
 
     var terminalState by rememberTerminalState(bars = bars)
 
-    val transformableState = TransformableState { zoomChange, panChange, _ ->
+    val transformableState = rememberTransformableState { zoomChange, panChange, _ ->
         val visibleBarsCount = (terminalState.visibleBarsCount / zoomChange)
             .roundToInt()
             .coerceIn(MIN_VISIBLE_BARS_COUNT, bars.size)
@@ -53,9 +56,11 @@ fun Terminal(bars: List<Bar>) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
+            .clipToBounds()
             .padding(
                 top = 32.dp,
-                bottom = 32.dp
+                bottom = 32.dp,
+                end = 32.dp
             )
             .transformable(transformableState)
             .onSizeChanged {
