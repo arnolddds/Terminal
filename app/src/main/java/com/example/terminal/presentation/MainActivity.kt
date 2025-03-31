@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
                             bars = currentState.barList
                         )
                     }
-
                     is TerminalScreenState.Initial -> {
 
                     }
