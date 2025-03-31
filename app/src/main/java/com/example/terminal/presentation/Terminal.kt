@@ -9,11 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.layout.onSizeChanged
 import com.example.terminal.data.Bar
 import kotlin.math.roundToInt
 
@@ -23,7 +25,7 @@ private const val MIN_VISIBLE_BARS_COUNT = 20
 @Composable
 fun Terminal(bars: List<Bar>) {
 
-    var terminalState by remember {
+    var terminalState by rememberSaveable {
         mutableStateOf(TerminalState(bars))
     }
 
@@ -46,9 +48,11 @@ fun Terminal(bars: List<Bar>) {
             .fillMaxSize()
             .background(Color.Black)
             .transformable(transformableState)
+            .onSizeChanged {
+                terminalState = terminalState.copy(terminalWidth = it.width.toFloat())
+            }
 
     ) {
-        terminalState = terminalState.copy(terminalWidth = size.width)
         val max = terminalState.visibleBars.maxOf { it.high }
         val min = terminalState.visibleBars.minOf { it.low }
         val pxPerPoint = size.height / (max - min)
