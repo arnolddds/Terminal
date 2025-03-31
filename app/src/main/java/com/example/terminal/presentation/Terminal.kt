@@ -30,11 +30,15 @@ import kotlin.math.roundToInt
 private const val MIN_VISIBLE_BARS_COUNT = 20
 
 @Composable
-fun Terminal(bars: List<Bar>) {
+fun Terminal(
+    modifier: Modifier = Modifier,
+    bars: List<Bar>
+) {
 
     var terminalState by rememberTerminalState(bars = bars)
 
     Chart(
+        modifier = modifier,
         terminalState = terminalState,
         onTerminalStateChanged = {
             terminalState = it
@@ -42,6 +46,7 @@ fun Terminal(bars: List<Bar>) {
     )
     bars.firstOrNull()?.let {
         Prices(
+            modifier = modifier,
             max = terminalState.max,
             min = terminalState.min,
             pxPerPoint = terminalState.pxPerPoint,
@@ -52,6 +57,7 @@ fun Terminal(bars: List<Bar>) {
 
 @Composable
 private fun Chart(
+    modifier: Modifier = Modifier,
     terminalState: TerminalState,
     onTerminalStateChanged: (TerminalState) -> Unit
 ) {
@@ -73,7 +79,7 @@ private fun Chart(
     }
 
     Canvas(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(Color.Black)
             .clipToBounds()
@@ -126,6 +132,7 @@ private fun Chart(
 
 @Composable
 private fun Prices(
+    modifier: Modifier = Modifier,
     max: Float,
     min: Float,
     pxPerPoint: Float,
@@ -133,7 +140,7 @@ private fun Prices(
 ) {
     val textMeasurer = rememberTextMeasurer()
     Canvas(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .clipToBounds()
             .padding(vertical = 32.dp)
@@ -202,7 +209,7 @@ private fun DrawScope.drawTextPrice(
     )
     drawText(
         textLayoutResult = textLayoutResult,
-        topLeft = Offset(size.width - textLayoutResult.size.width, offsetY)
+        topLeft = Offset(size.width - textLayoutResult.size.width - 4.dp.toPx(), offsetY)
     )
 }
 
