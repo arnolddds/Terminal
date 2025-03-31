@@ -1,6 +1,12 @@
 package com.example.terminal.presentation
 
 import android.os.Parcelable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import com.example.terminal.data.Bar
 import kotlinx.parcelize.Parcelize
 import kotlin.math.roundToInt
@@ -12,7 +18,7 @@ data class TerminalState(
     val visibleBarsCount: Int = 100,
     val terminalWidth: Float = 0f,
     val scrolledBy: Float = 0f
-): Parcelable {
+) : Parcelable {
 
     val barWidth: Float
         get() = terminalWidth / visibleBarsCount
@@ -27,3 +33,9 @@ data class TerminalState(
 
 }
 
+@Composable
+fun rememberTerminalState(bars: List<Bar>): MutableState<TerminalState> {
+    return rememberSaveable {
+        mutableStateOf(TerminalState(bars))
+    }
+}
