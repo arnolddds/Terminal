@@ -42,6 +42,8 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 
+
+
 private const val MIN_VISIBLE_BARS_COUNT = 20
 
 @Composable
