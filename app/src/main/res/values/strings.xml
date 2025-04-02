@@ -4,4 +4,6 @@
     <string name="timeframe_15_minutes">M15</string>
     <string name="timeframe_30_minutes">M30</string>
     <string name="timeframe_1_hour">H1</string>
+    <string name="error_network_message">Нет подключения к интернету</string>
+    <string name="tap_to_retry">Нажмите на иконку для повторной попытки</string>
 </resources>

@@ -1,14 +1,15 @@
-package com.example.terminal.presentation
+package com.example.terminal.presentation.terminal
 
 import android.os.Parcelable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import com.example.terminal.data.Bar
+import com.example.terminal.domain.model.Bar
 import kotlinx.parcelize.Parcelize
 import kotlin.math.roundToInt
-
 
 @Parcelize
 data class TerminalState(
