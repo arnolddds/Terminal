@@ -1,4 +1,4 @@
-package com.example.terminal.presentation
+package com.example.terminal.domain.model
 
 enum class TimeFrame(val value: String) {
     MIN_5(value = "5/minute"),

@@ -2,18 +2,26 @@ package com.example.terminal.presentation
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.rememberTransformableState
 import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -32,11 +40,17 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.terminal.R
-import com.example.terminal.data.Bar
+import com.example.terminal.domain.model.Bar
+import com.example.terminal.domain.model.TimeFrame
+import com.example.terminal.presentation.terminal.TerminalScreenState
+import com.example.terminal.presentation.terminal.TerminalState
+import com.example.terminal.presentation.terminal.TerminalViewModel
+import com.example.terminal.presentation.terminal.rememberTerminalState
 import java.util.Calendar
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -95,6 +109,44 @@ fun Terminal(
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
+                }
+            }
+
+            is TerminalScreenState.Error -> {
+                Column (
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clickable {
+                                val lastTimeFrame =
+                                    (screenState.value as? TerminalScreenState.Content)?.timeFrame
+                                        ?: TimeFrame.HOUR_1
+                                viewModel.loadBarList(lastTimeFrame)
+                            },
+                        imageVector = Icons.Default.Refresh,
+                        contentDescription = "Error icon",
+                        tint = Color.White,
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = stringResource(R.string.error_network_message),
+                        fontSize = 20.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = stringResource(R.string.tap_to_retry),
+                        fontSize = 16.sp,
+                        color = Color.Gray,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }
@@ -278,12 +330,6 @@ private fun Chart(
         }
 
     }
-//    currentState.barList.firstOrNull()?.let {
-//        Prices(
-//            terminalState = terminalState,
-//            lastPrice = it.close
-//        )
-//    }
 }
 
 @Composable

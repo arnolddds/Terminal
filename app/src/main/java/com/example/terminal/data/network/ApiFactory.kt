@@ -1,14 +1,17 @@
-package com.example.terminal.data
+package com.example.terminal.data.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object ApiFactory {
+@Singleton
+class ApiFactory @Inject constructor() {
+    private val BASE_URL = "https://api.polygon.io/v2/"
 
-    private const val BASE_URL = "https://api.polygon.io/v2/"
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().apply {
