@@ -6,4 +6,8 @@
     <string name="timeframe_1_hour">H1</string>
     <string name="error_network_message">Нет подключения к интернету</string>
     <string name="tap_to_retry">Нажмите на иконку для повторной попытки</string>
+    <string name="error_rate_limit_message">Превышен лимит запросов</string>
+    <string name="retry_available_in">Повторите попытку через минуту</string>
+    <string name="error_server_message">Ошибка сервера</string>
+    <string name="error_unknown_message">Неизвестная ошибка</string>
 </resources>

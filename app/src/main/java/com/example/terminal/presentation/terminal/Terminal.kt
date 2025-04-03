@@ -108,45 +108,83 @@ fun Terminal(
                         .background(Color.Black),
                     contentAlignment = Alignment.Center
                 ) {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(color = Color.White)
                 }
             }
 
             is TerminalScreenState.Error -> {
-                Column (
+                val (errorMessage, icon) = when (currentState.error) {
+                    is com.example.terminal.domain.model.Error.NetworkError -> Pair(
+                        stringResource(R.string.error_network_message),
+                        Icons.Default.Refresh
+                    )
+                    is com.example.terminal.domain.model.Error.RateLimitError -> Pair(
+                        stringResource(R.string.error_rate_limit_message),
+                        Icons.Default.Refresh
+                    )
+                    is com.example.terminal.domain.model.Error.ServerError -> Pair(
+                        stringResource(R.string.error_server_message),
+                        Icons.Default.Refresh
+                    )
+                    else -> Pair(
+                        stringResource(R.string.error_unknown_message),
+                        Icons.Default.Refresh
+                    )
+                }
+
+                Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Black),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Icon(
-                        modifier = Modifier
-                            .size(32.dp)
-                            .clickable {
-                                val lastTimeFrame =
-                                    (screenState.value as? TerminalScreenState.Content)?.timeFrame
-                                        ?: TimeFrame.HOUR_1
-                                viewModel.loadBarList(lastTimeFrame)
-                            },
-                        imageVector = Icons.Default.Refresh,
+                        imageVector = icon,
                         contentDescription = "Error icon",
                         tint = Color.White,
+                        modifier = Modifier
+                            .clickable {
+                                currentState.timeFrame?.let { frame ->
+                                    viewModel.loadBarList(frame)
+                                } ?: viewModel.loadBarList(TimeFrame.HOUR_1)
+                            }
+                            .size(48.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = stringResource(R.string.error_network_message),
+                        text = errorMessage,
                         fontSize = 20.sp,
                         color = Color.White,
                         textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = stringResource(R.string.tap_to_retry),
-                        fontSize = 16.sp,
-                        color = Color.Gray,
-                        textAlign = TextAlign.Center
-                    )
+
+                    if (currentState.error is com.example.terminal.domain.model.Error.RateLimitError) {
+                        val retryAfter = (currentState.error).retryAfterSeconds
+                        if (retryAfter != null) {
+                            Spacer(modifier = Modifier
+                                .height(8.dp))
+                            Text(
+                                text = stringResource(R.string.retry_available_in, retryAfter),
+                                fontSize = 14.sp,
+                                color = Color.LightGray,
+                                modifier = Modifier
+                                    .clickable {
+                                        currentState.timeFrame?.let { frame ->
+                                            viewModel.loadBarList(frame)
+                                        } ?: viewModel.loadBarList(TimeFrame.HOUR_1)
+                                    }
+                            )
+                        }
+                    } else {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = stringResource(R.string.tap_to_retry),
+                            fontSize = 16.sp,
+                            color = Color.Gray,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }

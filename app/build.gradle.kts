@@ -54,6 +54,7 @@ dependencies {
     
     // Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
+    implementation(libs.firebase.crashlytics.buildtools)
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
     
     testImplementation(libs.junit)
