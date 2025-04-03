@@ -1,10 +1,10 @@
-# 📈 Terminal Charts Pro
+# 📈 Terminal
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.1.10-blue.svg)](https://kotlinlang.org)
 [![Compose](https://img.shields.io/badge/Jetpack_Compose-1.5.0-brightgreen)](https://developer.android.com/jetpack/compose)
 [![API](https://img.shields.io/badge/API-24%2B-orange)](https://android-arsenal.com/api?level=24)
 
-Приложение для анализа биржевых графиков с продвинутым управлением и обработкой ошибок.
+Приложение для анализа биржевых графиков.
 
 ## 🌟 Демонстрация
 
