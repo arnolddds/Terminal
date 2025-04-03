@@ -6,8 +6,8 @@
 Приложение для отображения биржевых графиков с поддержкой различных временных интервалов и обработкой ограничений API.
 
 <p align="center">
-  <img src="screenshots/main_screen.png" width="30%">
-  <img src="screenshots/error_state.png" width="30%">
+  <img src="screenshots/main_screen.png" width="50%">
+  <img src="screenshots/main_zoomed_screen.png" width="50%">
 </p>
 
 ## Особенности
